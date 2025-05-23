@@ -5,11 +5,11 @@ open Types
 open GlobalConsts
 
 let init (x, y) =
-    [Left, x, y; Left, x+1, y; Left, x+2, y; Left, x+3, y; Left, x+4, y]
+    [x, y; x+1, y; x+2, y;x+3, y; x+4, y]
 
 let draw snek =
     Seq.iter
-        (fun (_, x, y) ->
+        (fun (x, y) ->
             Raylib.DrawRectangle(
                 x * cellSize, 
                 y * cellSize, 
@@ -18,7 +18,7 @@ let draw snek =
                 Color.Black))
         snek
 
-let update gamestate =
+(*let update gamestate =
     let rec aux previousDir acc remaining =
         match remaining with
         |[] -> List.rev acc
@@ -28,15 +28,27 @@ let update gamestate =
             aux 
                 dir 
                 ((previousDir, x + x', y + y') :: acc)
-                tail
+                tail*)
 
-    let newDir = Direction.getUserDir gamestate.RememberedDirection
-                
-    {   Snek = 
-            aux 
-                newDir
-                [] 
-                gamestate.Snek 
-            
-        RememberedDirection = 
-            newDir }
+let update gamestate =
+    match gamestate.Snek with
+    |(x, y) :: tail -> 
+        let deltaX, deltaY = Direction.toVector gamestate.RememberedDirection
+        let nextPos = (x + deltaX, y + deltaY)
+
+        nextPos
+        |> fun (x, y) ->
+            List.fold 
+                (fun hasCollided (a, b) -> hasCollided || (a = x) && (b = y))
+                false
+                tail
+            |> function false -> Some nextPos | true -> None
+    |[] -> None
+
+    |> function 
+        |Some validNextPos -> 
+            {   Snek = (validNextPos :: gamestate.Snek) |> ProjectUtils.cullLast
+                RememberedDirection = Direction.getUserDir gamestate.RememberedDirection }
+
+        |None ->
+            gamestate

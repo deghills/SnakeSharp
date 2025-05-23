@@ -3,7 +3,7 @@
 type Direction =
         Up | Down | Left | Right
 
-type Snake = (Direction*int*int) list
+type Snake = (int*int) list
 
 type GameState = {   
     RememberedDirection : Direction

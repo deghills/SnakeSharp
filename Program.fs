@@ -9,9 +9,9 @@ let x = Snake.init (20, 30)
 
 let screen = Array.zeroCreate<Color> (gridSize * gridSize)
 
-let (|Pos|) i =
-    i % gridSize * cellSize,
-    cellSize * i / gridSize
+let (|Pos|) i 
+    = i % gridSize * cellSize
+    , cellSize * i / gridSize
 
 let initWindow() = do
     Raylib.InitWindow(res, res, "no step on snek")
