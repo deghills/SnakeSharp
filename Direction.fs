@@ -17,11 +17,6 @@ let toVector = function
     |Left   ->  -1,  0
 
 let getUserDir memory =
-    let up      = int KeyboardKey.W
-    let left    = int KeyboardKey.A
-    let down    = int KeyboardKey.S
-    let right   = int KeyboardKey.D
-
     match Raylib.GetKeyPressed(), memory with
     |W, Down -> Down
     |A, Right -> Right
