@@ -18,18 +18,6 @@ let draw snek =
                 Color.Black))
         snek
 
-(*let update gamestate =
-    let rec aux previousDir acc remaining =
-        match remaining with
-        |[] -> List.rev acc
-            
-        |(dir, x, y) :: tail ->
-            let x', y' = Direction.toVector previousDir
-            aux 
-                dir 
-                ((previousDir, x + x', y + y') :: acc)
-                tail*)
-
 let update gamestate =
     match gamestate.Snek with
     |(x, y) :: tail -> 
@@ -47,8 +35,8 @@ let update gamestate =
 
     |> function 
         |Some validNextPos -> 
-            {   Snek = (validNextPos :: gamestate.Snek) |> ProjectUtils.cullLast
-                RememberedDirection = Direction.getUserDir gamestate.RememberedDirection }
+        {   Snek = (validNextPos :: gamestate.Snek) |> ProjectUtils.cullLast
+            RememberedDirection = Direction.getUserDir gamestate.RememberedDirection }
 
         |None ->
             gamestate
