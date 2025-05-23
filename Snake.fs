@@ -37,9 +37,9 @@ let update gamestate =
         let nextPos = (x + deltaX, y + deltaY)
 
         nextPos
-        |> fun (x, y) ->
+        |> fun (x', y') ->
             List.fold 
-                (fun hasCollided (a, b) -> hasCollided || (a = x) && (b = y))
+                (fun hasCollided (a, b) -> hasCollided || (a = x') && (b = y'))
                 false
                 tail
             |> function false -> Some nextPos | true -> None
