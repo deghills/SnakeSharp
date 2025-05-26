@@ -6,7 +6,9 @@ open GlobalConsts
 open ProjectUtils
 
 let init (x, y) =
-    [x, y; x+1, y]
+    [ x     , y
+    ; x + 1 , y
+    ; x + 2 , y]
 
 let draw (snek, _, Food (foodX, foodY)) = do
     Seq.iter
@@ -38,20 +40,20 @@ let update = function
             0 > x' || x' > gridSize-1 ||
             0 > y' || y' > gridSize-1)
         |> function 
-            | false when nextPos = food ->
+            |false when nextPos = food ->
                 let newSnek = [ yield! nextPos :: (x, y) :: body; yield tail ]
                 newSnek
                 ,Direction.getUserDir rememberedDirection
                 ,Food.spawnNewFood newSnek
                     
-            | false ->
+            |false ->
                 nextPos :: (x, y) :: body
                 ,Direction.getUserDir rememberedDirection
                 ,Food food
 
-            | true -> 
+            |true -> 
                 [ yield! (x, y) :: body; yield tail ]
                 ,rememberedDirection
                 ,Food food
 
-    |_ -> failwith "wahappen??"
+    |_ -> failwith ""
