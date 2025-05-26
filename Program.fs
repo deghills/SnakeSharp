@@ -28,11 +28,17 @@ let rec update gamestate =
     |false -> do
 
     draw gamestate
-    update << Snake.update <| gamestate
+    
+    gamestate 
+    |> Snake.update
+    |> update
 
 [<EntryPoint>]
 let main _ =
     do
         initWindow()
-        update (testSnek, Left, Food (1, 1))
+        update
+            ( gridSize >>> 1 |> fun x -> (x, x) |> Snake.init
+            , Left
+            , Food (1, 1))
     0
