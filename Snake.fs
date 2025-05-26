@@ -27,30 +27,31 @@ let draw (snek, _, Food (foodX, foodY)) = do
         Color.Green)
 
 let update = function
-    |DeconstructLast ((x, y) :: body, snekLast), rememberedDirection, Food (foodX, foodY) ->
+    |DeconstructLast ((x, y) :: body, tail), rememberedDirection, Food food ->
         let deltaX, deltaY = Direction.toVector rememberedDirection
         let nextPos = (x + deltaX, y + deltaY)
 
-        nextPos
-        |> fun (x', y') 
-            -> body
-            |> List.fold 
-                (fun hasCollided (a, b) -> hasCollided || (a = x' && b = y'))
-                false
-            |> function 
-                | false when x' = foodX && y' = foodY ->
-                    let newSnek = [ yield! nextPos :: (x, y) :: body; yield snekLast ]
-                    newSnek
-                    ,Direction.getUserDir rememberedDirection
-                    ,Food.spawnNewFood newSnek
+        (x, y) :: body
+        |> List.contains nextPos
+        |> (||) 
+            (let x', y' = nextPos
+            0 > x' || x' > gridSize-1 ||
+            0 > y' || y' > gridSize-1)
+        |> function 
+            | false when nextPos = food ->
+                let newSnek = [ yield! nextPos :: (x, y) :: body; yield tail ]
+                newSnek
+                ,Direction.getUserDir rememberedDirection
+                ,Food.spawnNewFood newSnek
                     
-                | false ->
-                    nextPos :: (x, y) :: body
-                    ,Direction.getUserDir rememberedDirection
-                    ,Food (foodX, foodY)
+            | false ->
+                nextPos :: (x, y) :: body
+                ,Direction.getUserDir rememberedDirection
+                ,Food food
 
-                | true -> 
-                    [ yield! (x, y) :: body; yield snekLast ]
-                    ,rememberedDirection
-                    ,Food (foodX, foodY)
+            | true -> 
+                [ yield! (x, y) :: body; yield tail ]
+                ,rememberedDirection
+                ,Food food
+
     |_ -> failwith "wahappen??"
