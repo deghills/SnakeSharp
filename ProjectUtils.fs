@@ -13,12 +13,12 @@ let (|W|A|S|D|Other|) i =
     elif i = int KeyboardKey.D then D
     else Other
 
-let (|DeconstructLast|Nil|) l = 
+let (|DeconstructLast|_|) l = 
     l 
     |> List.rev 
     |> phoenix 
         (function 
-            |(Some x) -> fun xs -> DeconstructLast (List.rev xs, x)
-            |None -> fun _ -> Nil) 
+            |Some x -> fun xs -> Some (List.rev xs, x)
+            |None -> fun _ -> None) 
         List.tryHead 
         List.tail
