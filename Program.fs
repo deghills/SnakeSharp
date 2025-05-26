@@ -4,7 +4,7 @@ open Raylib_cs
 open GlobalConsts
 open Types
 
-let testSnek = Snake.init (20, 30)
+let testSnek = gridSize >>> 1 |> fun x -> (x, x) |> Snake.init
 
 let (|Pos|) i 
     = i % gridSize * cellSize
@@ -38,7 +38,7 @@ let main _ =
     do
         initWindow()
         update
-            ( gridSize >>> 1 |> fun x -> (x, x) |> Snake.init
+            ( testSnek
             , Left
-            , Food (1, 1))
+            , Food.spawnNewFood testSnek )
     0

@@ -37,8 +37,8 @@ let update = function
         |> List.contains nextPos
         |> (||) 
             (let x', y' = nextPos
-            0 > x' || x' > gridSize-1 ||
-            0 > y' || y' > gridSize-1)
+            gridSize-1 < x' || x' < 0 ||
+            gridSize-1 < y' || y' < 0)
         |> function 
             |false when nextPos = food ->
                 let newSnek = [ yield! nextPos :: (x, y) :: body; yield tail ]
