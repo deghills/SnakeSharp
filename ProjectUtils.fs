@@ -2,6 +2,7 @@
 
 open Raylib_cs
 
+//S' combinator aka phoenix aka fork
 let phoenix binary unaryLeft unaryRight input =
     binary (unaryLeft input) (unaryRight input)
 
@@ -11,9 +12,6 @@ let (|W|A|S|D|Other|) i =
     elif i = int KeyboardKey.S then S
     elif i = int KeyboardKey.D then D
     else Other
-
-let cullLast<'a> : 'a list -> 'a list = 
-    List.rev >> List.tail >> List.rev
 
 let (|DeconstructLast|Nil|) l = 
     l 
