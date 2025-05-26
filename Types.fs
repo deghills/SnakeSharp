@@ -5,6 +5,6 @@ type Direction =
 
 type Snake = (int*int) list
 
-type GameState = {   
-    RememberedDirection : Direction
-    Snek : Snake }
+type Food = Food of (int*int)
+
+type GameState = Snake*Direction*Food

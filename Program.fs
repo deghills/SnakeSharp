@@ -4,10 +4,7 @@ open Raylib_cs
 open GlobalConsts
 open Types
 
-let x = Snake.init (20, 30)
-
-
-let screen = Array.zeroCreate<Color> (gridSize * gridSize)
+let testSnek = Snake.init (20, 30)
 
 let (|Pos|) i 
     = i % gridSize * cellSize
@@ -30,12 +27,12 @@ let rec update gamestate =
     |true -> ()
     |false -> do
 
-    draw gamestate.Snek
+    draw gamestate
     update << Snake.update <| gamestate
 
 [<EntryPoint>]
 let main _ =
     do
         initWindow()
-        update { RememberedDirection = Left; Snek = x }
+        update (testSnek, Left)
     0

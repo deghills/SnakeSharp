@@ -2,6 +2,9 @@
 
 open Raylib_cs
 
+let phoenix binary unaryLeft unaryRight input =
+    binary (unaryLeft input) (unaryRight input)
+
 let (|W|A|S|D|Other|) i =
     if i = int KeyboardKey.W then W
     elif i = int KeyboardKey.A then A
@@ -11,3 +14,13 @@ let (|W|A|S|D|Other|) i =
 
 let cullLast<'a> : 'a list -> 'a list = 
     List.rev >> List.tail >> List.rev
+
+let (|DeconstructLast|Nil|) l = 
+    l 
+    |> List.rev 
+    |> phoenix 
+        (function 
+            |(Some x) -> fun xs -> DeconstructLast (List.rev xs, x)
+            |None -> fun _ -> Nil) 
+        List.tryHead 
+        List.tail
