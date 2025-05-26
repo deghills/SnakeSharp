@@ -34,5 +34,5 @@ let rec update gamestate =
 let main _ =
     do
         initWindow()
-        update (testSnek, Left)
+        update (testSnek, Left, Food (1, 1))
     0

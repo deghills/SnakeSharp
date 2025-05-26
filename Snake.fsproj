@@ -10,6 +10,7 @@
     <Compile Include="ProjectUtils.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="Direction.fs" />
+    <Compile Include="Food.fs" />
     <Compile Include="Snake.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
