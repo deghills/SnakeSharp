@@ -13,27 +13,30 @@ let init (x, y) =
 let draw (snek, _, Food (foodX, foodY)) = do
     Seq.iter
         (fun (x, y) ->
-            Raylib.DrawRectangle(
-                x * cellSize, 
-                y * cellSize, 
-                cellSize, 
-                cellSize, 
-                Color.Black))
+            Raylib.DrawRectangle
+                ( x * cellSize
+                , y * cellSize
+                , cellSize
+                , cellSize
+                , Color.Black))
         snek
 
-    Raylib.DrawRectangle(
-        foodX * cellSize,
-        foodY * cellSize,
-        cellSize,
-        cellSize,
-        Color.Green)
+    Raylib.DrawRectangle
+        ( foodX * cellSize
+        , foodY * cellSize
+        , cellSize
+        , cellSize
+        , Color.Blue )
 
 let update = function
-    |DeconstructLast ((x, y) :: body, tail), rememberedDirection, Food food ->
-        let deltaX, deltaY = Direction.toVector rememberedDirection
-        let nextPos = (x + deltaX, y + deltaY)
+    |DeconstructLast ((headX, headY) :: body, tail), rememberedDirection, Food food ->
+        let deltaX, deltaY = 
+            Direction.toVector rememberedDirection
+        let nextPos 
+            = headX + deltaX
+            , headY + deltaY
 
-        (x, y) :: body
+        (headX, headY) :: body
         |> List.contains nextPos
         |> (||) 
             (let x', y' = nextPos
@@ -41,19 +44,23 @@ let update = function
             gridSize-1 < y' || y' < 0)
         |> function 
             |false when nextPos = food ->
-                let newSnek = [ yield! nextPos :: (x, y) :: body; yield tail ]
+                let newSnek = 
+                    [ yield! nextPos :: (headX, headY) :: body
+                    ; yield tail ]
+
                 newSnek
-                ,Direction.getUserDir rememberedDirection
-                ,Food.spawnNewFood newSnek
+                , Direction.getUserDir rememberedDirection
+                , Food.spawnNewFood newSnek
                     
             |false ->
-                nextPos :: (x, y) :: body
-                ,Direction.getUserDir rememberedDirection
-                ,Food food
+                nextPos :: (headX, headY) :: body
+                , Direction.getUserDir rememberedDirection
+                , Food food
 
             |true -> 
-                [ yield! (x, y) :: body; yield tail ]
-                ,rememberedDirection
-                ,Food food
+                [ yield! (headX, headY) :: body
+                ; yield tail ]
+                , rememberedDirection
+                , Food food
 
     |_ -> failwith ""

@@ -4,7 +4,10 @@ open Raylib_cs
 open GlobalConsts
 open Types
 
-let testSnek = gridSize >>> 1 |> fun x -> (x, x) |> Snake.init
+let testSnek = 
+    gridSize >>> 1 
+    |> fun x -> (x, x) 
+    |> Snake.init
 
 let (|Pos|) i 
     = i % gridSize * cellSize
