@@ -4,12 +4,6 @@ open Raylib_cs
 open ProjectUtils
 open Types
 
-let reverse = function
-    |Up     -> Down
-    |Down   -> Up
-    |Left   -> Right
-    |Right  -> Left
-
 let toVector = function
     |Up     ->  0, -1
     |Down   ->  0,  1
