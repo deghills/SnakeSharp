@@ -6,9 +6,7 @@ open GlobalConsts
 type Direction =
         Up | Down | Left | Right
 
-type Snake = Snake of(int*int) list
-
-type Snake with
+type Snake = Snake of(int*int) list with
     static member init (x, y) = 
         Snake
             [ x,        y 
@@ -19,27 +17,24 @@ type Food = Food of (int*int) with
     static member spawnNewFood =
         let rec aux (Snake snek) =
             let gridSizeDecr = gridSize - 1
-            let foodX, foodY = Raylib.GetRandomValue(0, gridSizeDecr), Raylib.GetRandomValue(0, gridSizeDecr)
+            let food = Raylib.GetRandomValue(0, gridSizeDecr), Raylib.GetRandomValue(0, gridSizeDecr)
 
             snek
-            |> List.contains (foodX, foodY)
-            |> function
-                |true -> aux (Snake snek)
-                |false -> Food (foodX, foodY)
+            |> List.contains food
+            |> function true -> aux (Snake snek) | false -> Food food
 
         aux
 
 type Score = Score of int
 
 type GameState = 
-    | Active of Snake*Direction*Food
+    | ActiveGame of Snake*Direction*Food
     | GameOver of Score with
-
 
     static member init() =
         let centre = gridSize >>> 1
         let snek = Snake.init (centre, centre)
-        Active
+        ActiveGame
             ( snek
             , Left
             , Food.spawnNewFood snek )
