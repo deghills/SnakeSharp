@@ -8,7 +8,7 @@ open GlobalConsts
 open ProjectUtils
 
 let draw = function
-    |Active (Snake snek, _, Food (foodX, foodY)) -> do
+    |ActiveGame (Snake snek, _, Food (foodX, foodY)) -> do
         Seq.iter
             (fun (x, y) ->
                 Raylib.DrawRectangle
@@ -27,48 +27,46 @@ let draw = function
             , Color.Blue )
 
     |GameOver (Score s) -> do
-        let centreScreen = res >>> 1
         Raylib.DrawText
             ( $"GAME OVER!\nScore: {s}\nPlay again: SPACE"
             , 0
             , 0
             , 50
-            , Color.Black)
+            , Color.Black )
 
 let update = function
-    |Active 
+    |ActiveGame 
         ( Snake ( DeconstructLast (
-            (headX, headY) :: body, tail))
+            head :: body, tail))
         , rememberedDirection
         , Food food) ->
 
-        let deltaX, deltaY = 
-            Direction.toVector rememberedDirection
-        let nextPos 
-            = headX + deltaX
-            , headY + deltaY
+        let nextPos = 
+            (fun (a, b) (c, d) -> a + c, b + d)
+                head 
+                (Direction.toVector rememberedDirection)
 
-        (headX, headY) :: body
+        head :: body
         |> List.contains nextPos
         |> (||) 
-            (let x', y' = nextPos
-            gridSize-1 < x' || x' < 0 ||
-            gridSize-1 < y' || y' < 0)
+            (let (x', y'), gridSizeDecr = nextPos, gridSize-1
+            gridSizeDecr < x' || x' < 0 ||
+            gridSizeDecr < y' || y' < 0 )
         |> function 
             |false when nextPos = food ->
                 let newSnek = 
                     Snake
-                        [ yield! nextPos :: (headX, headY) :: body
+                        [ yield! nextPos :: head :: body
                         ; yield tail ]
 
-                Active
+                ActiveGame
                     ( newSnek
                     , Direction.getUserDir rememberedDirection
                     , Food.spawnNewFood newSnek )
                     
             |false ->
-                Active 
-                    ( nextPos :: (headX, headY) :: body |> Snake
+                ActiveGame 
+                    ( nextPos :: head :: body |> Snake
                     , Direction.getUserDir rememberedDirection
                     , Food food )
 

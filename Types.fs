@@ -32,14 +32,14 @@ type Food = Food of (int*int) with
 type Score = Score of int
 
 type GameState = 
-    | Active of Snake*Direction*Food
+    | ActiveGame of Snake*Direction*Food
     | GameOver of Score with
 
 
     static member init() =
         let centre = gridSize >>> 1
         let snek = Snake.init (centre, centre)
-        Active
+        ActiveGame
             ( snek
             , Left
             , Food.spawnNewFood snek )

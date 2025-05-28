@@ -4,15 +4,6 @@ open Raylib_cs
 open GlobalConsts
 open Types
 
-let testSnek = 
-    gridSize >>> 1 
-    |> fun x -> (x, x) 
-    |> Snake.init
-
-let (|Pos|) i 
-    = i % gridSize * cellSize
-    , cellSize * i / gridSize
-
 let initWindow() = do
     Raylib.InitWindow(res, res, "no step on snek")
     Raylib.SetTargetFPS gameSpeed
