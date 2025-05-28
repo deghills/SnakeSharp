@@ -25,7 +25,7 @@ let draw snek = do
 
     Raylib.EndDrawing()
 
-let rec update gamestate =
+let rec update (gamestate: GameState) =
     match (Raylib.WindowShouldClose():bool) with
     |true -> ()
     |false -> do
@@ -40,8 +40,5 @@ let rec update gamestate =
 let main _ =
     do
         initWindow()
-        update
-            ( testSnek
-            , Left
-            , Food.spawnNewFood testSnek )
+        (update << GameState.init)()
     0
