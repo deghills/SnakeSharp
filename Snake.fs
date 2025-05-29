@@ -36,7 +36,7 @@ let draw = function
 
 let update = function
     |ActiveGame 
-        ( Snake ( DeconstructLast (
+        (Snake (DeconstructLast (
             head :: body, tail))
         , rememberedDirection
         , Food food) ->
