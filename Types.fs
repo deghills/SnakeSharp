@@ -6,12 +6,7 @@ open GlobalConsts
 type Direction =
         Up | Down | Left | Right
 
-type Snake = Snake of (int*int) list with
-    static member init (x, y) = 
-        Snake
-            [ x,        y 
-            ; x + 1,    y
-            ; x + 2,    y ]
+type Snake = Snake of (int*int) list
 
 type Food = Food of (int*int) with
     static member spawnNewFood =
@@ -35,7 +30,7 @@ type GameState =
 
     static member init() =
         let centre = gridSize >>> 1
-        let snek = Snake.init (centre, centre)
+        let snek = Snake [centre, centre]
         ActiveGame
             ( snek
             , Left

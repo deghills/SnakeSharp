@@ -36,22 +36,29 @@ let draw = function
 
 let update = function
     |ActiveGame
-        ( Snake ( DeconstructLast (head :: body, tail))
+        ( Snake ( DeconstructLast (body, tail))
         , rememberedDirection
         , Food food) ->
 
         let nextPos =
-            (head, Direction.toVector rememberedDirection)
-            ||> fun (a, b) (c, d) -> a + c, b + d
-            |> taurus
+            let vectorAdd (a, b) (c, d) = a + c, b + d in
+            match List.tryHead body with
+            |Some head ->
+                (head, Direction.toVector rememberedDirection)
+                ||> vectorAdd
+                |> taurus
+            |None ->
+                (tail, Direction.toVector rememberedDirection)
+                ||> vectorAdd
+                |> taurus
 
-        (head :: body)
+        in body
         |> List.contains nextPos
         |> function 
             |false when nextPos = food ->
                 let newSnek = 
                     Snake
-                        [ yield! nextPos :: head :: body
+                        [ yield! nextPos :: body
                         ; yield tail ] 
                 in ActiveGame
                     ( newSnek
@@ -60,12 +67,12 @@ let update = function
                     
             |false ->
                 ActiveGame 
-                    ( nextPos :: head :: body |> Snake
+                    ( nextPos :: body |> Snake
                     , Direction.getUserDir rememberedDirection
                     , Food food )
 
             |true ->
-                (GameOver << Score << (+) -1 << Seq.length) body
+                (GameOver << Score << Seq.length) body
 
     |GameOver score ->
         if (Raylib.IsKeyDown KeyboardKey.Space:bool) then
