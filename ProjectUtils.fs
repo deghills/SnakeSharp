@@ -15,7 +15,7 @@ let (|W|A|S|D|Other|) i =
 
 let (|DeconstructLast|_|) l = 
     l
-    |>List.rev 
+    |> List.rev 
     |> phoenix 
         (function 
             |Some x -> fun xs -> Some (List.rev xs, x)

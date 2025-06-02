@@ -6,7 +6,7 @@ open GlobalConsts
 type Direction =
         Up | Down | Left | Right
 
-type Snake = Snake of(int*int) list with
+type Snake = Snake of (int*int) list with
     static member init (x, y) = 
         Snake
             [ x,        y 
