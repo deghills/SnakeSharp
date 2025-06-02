@@ -3,4 +3,4 @@
 let res = 960
 let gridSize = 32
 let cellSize = res / gridSize
-let gameSpeed = 25
+let gameSpeed = 16
