@@ -41,15 +41,17 @@ let update = function
         , Food food) ->
 
         let nextPos =
-            let vectorAdd (a, b) (c, d) = a + c, b + d in
+            let addRememberedDirection = 
+                Direction.toVector rememberedDirection
+                |> fun (a, b) (c, d) -> a + c, b + d in
             match List.tryHead body with
             |Some head ->
-                (head, Direction.toVector rememberedDirection)
-                ||> vectorAdd
+                head
+                |> addRememberedDirection
                 |> taurus
             |None ->
-                (tail, Direction.toVector rememberedDirection)
-                ||> vectorAdd
+                tail
+                |> addRememberedDirection
                 |> taurus
 
         in body
