@@ -42,7 +42,7 @@ let update = function
 
         let nextPos =
             let addRememberedDirection = 
-                Direction.toVector rememberedDirection
+                rememberedDirection.toVector
                 |> fun (a, b) (c, d) -> a + c, b + d in
             match List.tryHead body with
             |Some head ->
