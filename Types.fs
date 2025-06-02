@@ -17,7 +17,9 @@ type Food = Food of (int*int) with
     static member spawnNewFood =
         let rec aux (Snake snek) =
             let gridSizeDecr = gridSize - 1
-            let food = Raylib.GetRandomValue(0, gridSizeDecr), Raylib.GetRandomValue(0, gridSizeDecr)
+            let food 
+                = Raylib.GetRandomValue(0, gridSizeDecr)
+                , Raylib.GetRandomValue(0, gridSizeDecr)
 
             snek
             |> List.contains food

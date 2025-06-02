@@ -36,15 +36,13 @@ let draw = function
 
 let update = function
     |ActiveGame
-        (Snake (DeconstructLast (
-            head :: body, tail))
+        ( Snake ( DeconstructLast (head :: body, tail))
         , rememberedDirection
         , Food food) ->
 
-        let nextPos = 
-            (fun (a, b) (c, d) -> a + c, b + d)
-                head 
-                (Direction.toVector rememberedDirection)
+        let nextPos =
+            (head, Direction.toVector rememberedDirection)
+            ||> fun (a, b) (c, d) -> a + c, b + d
             |> taurus
 
         (head :: body)
@@ -54,9 +52,8 @@ let update = function
                 let newSnek = 
                     Snake
                         [ yield! nextPos :: head :: body
-                        ; yield tail ]
-
-                ActiveGame
+                        ; yield tail ] 
+                in ActiveGame
                     ( newSnek
                     , Direction.getUserDir rememberedDirection
                     , Food.spawnNewFood newSnek )
