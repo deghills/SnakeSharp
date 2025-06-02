@@ -41,10 +41,9 @@ let update = function
         , rememberedDirection
         , Food food) ->
 
-        let nextPos = 
-            (fun (a, b) (c, d) -> a + c, b + d)
-                head 
-                (Direction.toVector rememberedDirection)
+        let nextPos =
+            (head, Direction.toVector rememberedDirection)
+            ||> (fun (a, b) (c, d) -> a + c, b + d)
             |> taurus
 
         (head :: body)
