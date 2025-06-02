@@ -22,3 +22,10 @@ let (|DeconstructLast|_|) l =
             |None -> fun _ -> None) 
         List.tryHead 
         List.tail
+
+let notBadModulo n i =
+    ((i % n) + n) % n
+
+let taurus (x, y) = 
+    notBadModulo GlobalConsts.gridSize
+    |> fun f -> (f x, f y) 

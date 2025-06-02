@@ -16,7 +16,7 @@ let draw snek = do
 
     Raylib.EndDrawing()
 
-let rec update (gamestate: GameState) =
+let rec update gamestate =
     match (Raylib.WindowShouldClose():bool) with
     |true -> ()
     |false -> do
@@ -30,6 +30,5 @@ let rec update (gamestate: GameState) =
 [<EntryPoint>]
 let main _ =
     do
-        initWindow()
-        (update << GameState.init)()
+        (initWindow >> GameState.init >> update)()
     0

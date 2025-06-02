@@ -35,7 +35,7 @@ let draw = function
             , Color.Black )
 
 let update = function
-    |ActiveGame 
+    |ActiveGame
         (Snake (DeconstructLast (
             head :: body, tail))
         , rememberedDirection
@@ -45,13 +45,10 @@ let update = function
             (fun (a, b) (c, d) -> a + c, b + d)
                 head 
                 (Direction.toVector rememberedDirection)
+            |> taurus
 
-        head :: body
+        (head :: body)
         |> List.contains nextPos
-        |> (||) 
-            (let (x', y'), gridSizeDecr = nextPos, gridSize-1
-            gridSizeDecr < x' || x' < 0 ||
-            gridSizeDecr < y' || y' < 0 )
         |> function 
             |false when nextPos = food ->
                 let newSnek = 
