@@ -76,4 +76,4 @@ let update = function
         else
             GameOver score
 
-    |_ -> failwith ""
+    |_ -> GameOver (Score -1)
